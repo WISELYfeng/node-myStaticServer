@@ -1,0 +1,13 @@
+{
+  "name": "node-http-1",
+  "version": "1.0.0",
+  "main": "index.ts",
+  "author": "wsielyfeng <learnroad@163.com>",
+  "license": "MIT",
+  "dependencies": {
+    "ts-node-dev": "^1.1.8"
+  },
+  "devDependencies": {
+    "@types/node": "^16.11.7"
+  }
+}
