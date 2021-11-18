@@ -21,3 +21,15 @@
 
 + `curl -v http://localhost:8888/`会在命令行中显示请求信息
 + `curl -v -d "name:xxx" http://localhost:8888/` 以post形式去发送请求
+
+## request对象
+
++ data事件：数据会被分割成极小的包传输，通过此事件接收数据。
++ `request.on('data', (chunk) =>{...})`
++ end事件：所有数据传输完成时触发
++ `request.on('end', ()=>{...})`
+
+## response对象
+
++ 有getHeader/setHeader/write/end等方法
++ 可以控制所有响应属性
