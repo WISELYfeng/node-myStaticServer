@@ -28,8 +28,14 @@
 + `request.on('data', (chunk) =>{...})`
 + end事件：所有数据传输完成时触发
 + `request.on('end', ()=>{...})`
++ 继承了stream.Readable类
 
 ## response对象
 
 + 有getHeader/setHeader/write/end等方法
 + 可以控制所有响应属性
++ 继承了Stream类
+
+## 实现功能
+
+### 根据不同的url返回不同文件
