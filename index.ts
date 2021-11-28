@@ -11,30 +11,31 @@ const publicDir = p.resolve(__dirname, 'public')
 
 server.on('request', (request: IncomingMessage, response: ServerResponse)=>{
     const {method, url: path, headers} = request;
-    const {pathname, search} = url.parse(path); // 解析url参数
-    switch (pathname){  // 对url的响应
-        case '/index.html':
-            fs.readFile(p.resolve(publicDir, 'index.html'), (error, data) =>{
-                if(error) throw error;
-                response.end(data.toString())
-            })
-            break;
-        case '/style.css':
-            response.setHeader('Content-Type', 'text/css; charset=utf-8')
-            fs.readFile(p.resolve(publicDir, 'style.css'), (error, data) =>{
-                if(error) throw error;
-                response.end(data.toString())
-            })
-            break;
-        case '/main.js':
-            response.setHeader('Content-Type', 'text/javascript; charset=utf-8')
-            fs.readFile(p.resolve(publicDir, 'main.js'), (error, data) =>{
-                if(error) throw error;
-                response.end(data.toString())
-            })
-            break;
-
+    const {pathname, search} = url.parse(path); // 解析url参数,TODO 待换用新版API
+    let filename = pathname.substr(1)
+    if(filename === ''){
+        filename = 'index.html'
     }
+    fs.readFile(p.resolve(publicDir, filename), (error, data) =>{
+        if(error){
+            if(error.errno === -4058){
+                response.statusCode = 404
+                fs.readFile(p.resolve(publicDir, '404.html'), (error, data) => {
+                    response.end(data)
+                })
+            }else if(error.errno === -4068){
+                response.statusCode = 403
+                response.end('无权查看目录内容')
+                
+            }
+            else{
+                response.statusCode = 500
+                response.end('服务器繁忙，请稍后重试')
+            }
+        }else{
+            response.end(data)
+        }
+    })
 })
 
 server.listen(8888)
