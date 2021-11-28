@@ -1,3 +1,5 @@
+/* 代码为饥人谷第86课静态服务器教学中跟着敲的。以此记录。
+ */
 import * as http from 'http';
 import { IncomingMessage, ServerResponse }  from 'http';
 import * as fs from 'fs';
