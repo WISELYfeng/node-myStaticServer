@@ -13,6 +13,13 @@ server.on('request', (request: IncomingMessage, response: ServerResponse)=>{
     const {method, url: path, headers} = request;
     const {pathname, search} = url.parse(path); // 解析url参数,TODO 待换用新版API
     let filename = pathname.substr(1)
+    let cacheAge = 3600 * 24 * 365
+
+    if(method !== 'GET'){ // 静态服务器不接受get之外请求
+        response.statusCode = 405
+        response.end()
+        return
+    }
     if(filename === ''){
         filename = 'index.html'
     }
@@ -33,6 +40,7 @@ server.on('request', (request: IncomingMessage, response: ServerResponse)=>{
                 response.end('服务器繁忙，请稍后重试')
             }
         }else{
+            response.setHeader('Cache-Control', `public, max-age=${cacheAge}`)
             response.end(data)
         }
     })
